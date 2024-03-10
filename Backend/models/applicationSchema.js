@@ -14,7 +14,7 @@ const applicationSchema = new mongoose.Schema({
         validator: [validator.isEmail, "Please provide a valid email address"],
         required: [true, "Please provide your email address"],
     },
-    converLetter:{
+    coverLetter:{
         type: String,
         required:[true, "Please provide a cover letter"],
     },
