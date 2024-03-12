@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import toast from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
@@ -12,7 +12,8 @@ const MyJobs = () => {
   const { isAuthorized, user } = useContext(Context);
 
   const navigateTo = useNavigate();
-  //Fetching all jobs
+
+  // Fetching All Jobs of an Employer
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -20,7 +21,7 @@ const MyJobs = () => {
           "http://localhost:4001/api/v1/job/getmyjobs",
           { withCredentials: true }
         );
-        setMyJobs(data.myJobs);
+        setMyJobs(data.myjobs);
       } catch (error) {
         toast.error(error.response.data.message);
         setMyJobs([]);
@@ -28,22 +29,20 @@ const MyJobs = () => {
     };
     fetchJobs();
   }, []);
+
   if (!isAuthorized || (user && user.role !== "Employer")) {
     navigateTo("/");
   }
 
-  //Function For Enabling Editing Mode
+  // Fuction for Enabling Editing Mode
   const handleEnableEdit = (jobId) => {
-    //Here We Are Giving Id in setEditingMode because We want to enable only that job whose ID has been send.
+    setEditingMode(jobId);
+  };
+  const handleDisableEdit = (jobId) => {
     setEditingMode(jobId);
   };
 
-  //Function For Disabling Editing Mode
-  const handleDisableEdit = () => {
-    setEditingMode(null);
-  };
-
-  //Function For Updating The Job
+  // Funtion for Editing Job
   const handleUpdateJob = async (jobId) => {
     const updatedJob = myJobs.find((job) => job._id === jobId);
     await axios
@@ -59,7 +58,7 @@ const MyJobs = () => {
       });
   };
 
-  //Function For Deleting Job
+  // Fuction for Deleting Job
   const handleDeleteJob = async (jobId) => {
     await axios
       .delete(`http://localhost:4001/api/v1/job/delete/${jobId}`, {
@@ -70,14 +69,15 @@ const MyJobs = () => {
         setMyJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        {
+          toast.error(error.response.data.message);
+        }
       });
   };
 
   const handleInputChange = (jobId, field, value) => {
-    // Update the job object in the jobs state with the new value
-    setMyJobs((prevJobs) =>
-      prevJobs.map((job) =>
+    setMyJobs((prevJobs) => 
+      prevJobs.map((job) => 
         job._id === jobId ? { ...job, [field]: value } : job
       )
     );
@@ -88,7 +88,7 @@ const MyJobs = () => {
       <div className="myJobs page">
         <div className="container">
           <h1>Your Posted Jobs</h1>
-          {myJobs.length > 0 ? (
+          {myJobs && myJobs.length > 0 ? (
             <>
               <div className="banner">
                 {myJobs.map((element) => (
