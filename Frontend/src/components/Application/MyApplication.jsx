@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import ResumeModal from "./ResumeModal";
 
 const MyApplication = () => {
-  const [application, setApplication] = useState([]);
+  const [applications, setApplication] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [resumeimageUrl, setResumeImageUrl] = useState(false);
+  const [resumeImageUrl, setResumeImageUrl] = useState(false);
   const { user, isAuthorized } = useContext(Context);
 
   const navigateTo = useNavigate();
@@ -41,15 +41,15 @@ const MyApplication = () => {
     navigateTo("/login");
   }
 
-  const deletApplication = (id)=>{
+  const deleteApplication = async (id)=>{
     try {
-      axios.delete(`http://localhost:4001/api/v1/application/delete/${id}`, {
+      await axios.delete(`http://localhost:4001/api/v1/application/delete/${id}`, {
         withCredentials: true,
       })
       .then((res) =>{
         toast.success(res.data.message);
-        setApplication(prevApplications =>{
-          prevApplications.filter(application => application._id !== id);
+        setApplication((prevApplication) =>{
+          prevApplication.filter((application) => application._id !== id);
         });
       })
     } catch (error) {
@@ -94,7 +94,8 @@ const MyApplication = () => {
           <h1>Applications From Job Seekers</h1>
           {applications.length <= 0 ? (
             <>
-              <h4>No Applications Found</h4>
+            { " " }
+              <h4>No Applications Found</h4> {" "}
             </>
           ) : (
             applications.map((element) => {
@@ -148,7 +149,7 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
           />
         </div>
         <div className="btn_area">
-          <button onClick={() => deleteApplication(element._id)}>
+          <button onClick={ () => deleteApplication(element._id) }>
             Delete Application
           </button>
         </div>
