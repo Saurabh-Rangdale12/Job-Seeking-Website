@@ -9,3 +9,6 @@ export const dbConnection = () =>{
         console.log(`Error while connecting to database: ${err}`)
     })
 }
+
+// jobseeking
+// Password
