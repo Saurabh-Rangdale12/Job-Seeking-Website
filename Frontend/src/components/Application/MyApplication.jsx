@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useContext } from "react";
 import { Context } from "../../main";
+import { useContext } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -9,10 +9,11 @@ import ResumeModal from "./ResumeModal";
 const MyApplication = () => {
   const [applications, setApplication] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [resumeImageUrl, setResumeImageUrl] = useState(false);
+  const [resumeImageUrl, setResumeImageUrl] = useState("");
   const { user, isAuthorized } = useContext(Context);
 
   const navigateTo = useNavigate();
+
   useEffect(() => {
     try {
       if (user && user.role === "Employer") {
@@ -37,88 +38,90 @@ const MyApplication = () => {
     }
   }, [isAuthorized]);
 
-  if(!isAuthorized){
+  if (!isAuthorized) {
     navigateTo("/login");
   }
 
-  const deleteApplication = async (id)=>{
+  const deleteApplication = (id) => {
     try {
-      await axios.delete(`http://localhost:4001/api/v1/application/delete/${id}`, {
-        withCredentials: true,
-      })
-      .then((res) =>{
-        toast.success(res.data.message);
-        setApplication((prevApplication) =>{
-          prevApplication.filter((application) => application._id !== id);
+      axios
+        .delete(`http://localhost:4001/api/v1/application/delete/${id}`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          toast.success(res.data.message);
+          setApplication((prevApplication) =>
+            prevApplication.filter((application) => application._id !== id)
+          );
         });
-      })
     } catch (error) {
       toast.error(error.response.data.message);
     }
-  }
+  };
 
-  const openModal = (imageUrl)=>{
+  const openModal = (imageUrl) => {
     setResumeImageUrl(imageUrl);
     setModalOpen(true);
   };
 
-  const closeModal = () =>{
+  const closeModal = () => {
     setModalOpen(false);
   };
 
-  return <>
-    <section className="my_applications page">
-      {user && user.role === "Job Seeker" ? (
-        <div className="container">
-          <h1>My Applications</h1>
-          {applications.length <= 0 ? (
-            <>
-              {" "}
-              <h4>No Applications Found</h4>{" "}
-            </>
-          ) : (
-            applications.map((element) => {
-              return (
-                <JobSeekerCard
-                  element={element}
-                  key={element._id}
-                  deleteApplication={deleteApplication}
-                  openModal={openModal}
-                />
-              );
-            })
-          )}
-        </div>
-      ) : (
-        <div className="container">
-          <h1>Applications From Job Seekers</h1>
-          {applications.length <= 0 ? (
-            <>
-            { " " }
-              <h4>No Applications Found</h4> {" "}
-            </>
-          ) : (
-            applications.map((element) => {
-              return (
-                <EmployerCard
-                  element={element}
-                  key={element._id}
-                  openModal={openModal}
-                />
-              );
-            })
-          )}
-        </div>
-      )}
-      {modalOpen && (
-        <ResumeModal imageUrl={resumeImageUrl} onClose={closeModal} />
-      )}
-    </section>
-  </>;
+  return (
+    <>
+      <section className="my_applications page">
+        {user && user.role === "Job Seeker" ? (
+          <div className="container">
+            <h1>My Applications</h1>
+            {applications && applications.length > 0 ? (
+              applications.map((element, index) => {
+                return (
+                  <JobSeekerCard
+                    element={element}
+                    key={element._id}
+                    deleteApplication={deleteApplication}
+                    openModal={openModal}
+                  />
+                );
+              })
+            ) : (
+              <>
+                {" "}
+                <h4>No Applications Found</h4>{" "}
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="container">
+            <h1>Applications From Job Seekers</h1>
+            {applications.length <= 0 ? (
+              <>
+                {" "}
+                <h4>No Applications Found</h4>{" "}
+              </>
+            ) : (
+              applications.map((element) => {
+                return (
+                  <EmployerCard
+                    element={element}
+                    key={element._id}
+                    openModal={openModal}
+                  />
+                );
+              })
+            )}
+          </div>
+        )}
+        {modalOpen && (
+          <ResumeModal imageUrl={resumeImageUrl} onClose={closeModal} />
+        )}
+      </section>
+    </>
+  );
 };
 
 export default MyApplication;
-
 
 const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
   return (
@@ -149,7 +152,7 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
           />
         </div>
         <div className="btn_area">
-          <button onClick={ () => deleteApplication(element._id) }>
+          <button onClick={() => deleteApplication(element._id)}>
             Delete Application
           </button>
         </div>
