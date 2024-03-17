@@ -43,9 +43,9 @@ const App = () => {
     <Router>
       <Navbar />
       <Routes>
+        <Route path="/" element = {<Home />} />
         <Route path="/login" element = {<Login />} />
         <Route path="/register" element = {<Register />} />
-        <Route path="/" element = {<Home />} />
         <Route path="/job/getall" element={<Jobs />} />
         <Route path="job/:id" element={<JobDetails />} />
         <Route path="job/post" element={<PostJobs />} />
