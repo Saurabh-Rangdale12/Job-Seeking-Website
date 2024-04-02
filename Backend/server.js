@@ -1,12 +1,6 @@
 import app from "./app.js";
 import cloudinary from "cloudinary"
-import { Server } from 'http';
 
-// changed to solve the issue
-import cors from "cors";
-app.use(cors());
-
-const server = new Server(app);
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLIENT_NAME,
