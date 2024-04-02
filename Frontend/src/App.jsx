@@ -18,10 +18,6 @@ import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 
 
-
-
-
-
 const App = () => {
 
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
@@ -29,8 +25,9 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4005/api/v1/user/me",
-          { withCredentials: true });
+          "http://localhost:6005/api/v1/user/me",
+          { withCredentials: true, });
+          console.log(response);
         setUser(response.data.user);
         setIsAuthorized(true);
       } catch (error) {
@@ -39,7 +36,7 @@ const App = () => {
       }
     };
     fetchUser();
-  }, [isAuthorized]);
+  },[isAuthorized]);
 
   return (
     <>

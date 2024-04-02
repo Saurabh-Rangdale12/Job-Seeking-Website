@@ -20,23 +20,23 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4005/api/v1/user/login",
+        "http://localhost:6005/api/v1/user/login",
         { email, password, role },
         {
-          withCredentials: true,
-          header: {
+          headers: {
             "Content-Type": "application/json",
           },
-        }
+          withCredentials: true,
+        },
+        setIsAuthorized(true)
       );
       toast.success(data.message);
       setEmail("");
       setPassword("");
       setRole("");
-      setIsAuthorized(true);
+      console.log(data);
     } catch (error) {
       toast.error(error.response.data.message);
-      console.log(error);
     }
   };
 

@@ -18,7 +18,7 @@ const MyApplication = () => {
     try {
       if (user && user.role === "Employer") {
         axios
-          .get("http://localhost:4005/api/v1/application/employer/getall", {
+          .get("http://localhost:6005/api/v1/application/employer/getall", {
             withCredentials: true,
           })
           .then((res) => {
@@ -26,7 +26,7 @@ const MyApplication = () => {
           });
       } else {
         axios
-          .get("http://localhost:4005/api/v1/application/jobseeker/getall", {
+          .get("http://localhost:6005/api/v1/application/jobseeker/getall", {
             withCredentials: true,
           })
           .then((res) => {
@@ -45,7 +45,7 @@ const MyApplication = () => {
   const deleteApplication = (id) => {
     try {
       axios
-        .delete(`http://localhost:4005/api/v1/application/delete/${id}`, {
+        .delete(`http://localhost:6005/api/v1/application/delete/${id}`, {
           withCredentials: true,
         })
         .then((res) => {
