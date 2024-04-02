@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, { useEffect, useContext } from 'react';
 import './App.css';
 import { Context } from './main';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -24,14 +24,17 @@ import { Toaster } from 'react-hot-toast';
 
 const App = () => {
 
-  const {isAuthorized, setIsAuthorized, setUser } = useContext(Context);
-  useEffect(() =>{
+  const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
+  useEffect(() => {
     const fetchUser = async () => {
-      try{
-        const response = await axios.get("http://localhost:4001/api/v1/user/me", {withCredentials: true});
+      try {
+        const response = await axios.get(
+          "http://localhost:4005/api/v1/user/me",
+          { withCredentials: true });
         setUser(response.data.user);
         setIsAuthorized(true);
-      } catch(error){
+      } catch (error) {
+        console.log(error);
         setIsAuthorized(false);
       }
     };
@@ -40,25 +43,26 @@ const App = () => {
 
   return (
     <>
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element = {<Home />} />
-        <Route path="/login" element = {<Login />} />
-        <Route path="/register" element = {<Register />} />
-        <Route path="/job/getall" element={<Jobs />} />
-        <Route path="job/:id" element={<JobDetails />} />
-        <Route path="job/post" element={<PostJobs />} />
-        <Route path="job/me" element={<MyJobs />} />
-        <Route path="/application/:id" element={<Application />} />
-        <Route path="application/me" element={<MyApplication />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-      <Toaster />
-    </Router>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/job/getall" element={<Jobs />} />
+          <Route path="job/:id" element={<JobDetails />} />
+          <Route path="job/post" element={<PostJobs />} />
+          <Route path="job/me" element={<MyJobs />} />
+          <Route path="/application/:id" element={<Application />} />
+          <Route path="application/me" element={<MyApplication />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+        <Toaster />
+      </Router>
     </>
   );
 }
 
 export default App;
+
