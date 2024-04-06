@@ -12,7 +12,7 @@ import fileUpload from "express-fileupload";
 
 
 const app = express();
-dotenv.config({ path: "./config/config.env" });
+// dotenv.config({ path: "./config/config.env" });
 
 
 // frontend endpoint
