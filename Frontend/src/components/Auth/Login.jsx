@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "https://job-seeking-website-seven.vercel.app/api/v1/user/login",
+        "http://localhost:6005/api/v1/user/login",
         { email, password, role },
         {
           headers: {

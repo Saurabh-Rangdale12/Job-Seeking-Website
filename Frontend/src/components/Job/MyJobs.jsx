@@ -18,7 +18,7 @@ const MyJobs = () => {
     const fetchJobs = async () => {
       try {
         const { data } = await axios.get(
-          "https://job-seeking-website-seven.vercel.app/api/v1/job/getmyjobs",
+          "http://localhost:6005/api/v1/job/getmyjobs",
           { withCredentials: true, }
         );
         setMyJobs(data.myjobs);
@@ -46,7 +46,7 @@ const MyJobs = () => {
   const handleUpdateJob = async (jobId) => {
     const updatedJob = myJobs.find((job) => job._id === jobId);
     await axios
-      .put(`https://job-seeking-website-seven.vercel.app/api/v1/job/update/${jobId}`, updatedJob, {
+      .put(`http://localhost:6005/api/v1/job/update/${jobId}`, updatedJob, {
         withCredentials: true,
       })
       .then((res) => {
@@ -61,7 +61,7 @@ const MyJobs = () => {
   // Fuction for Deleting Job
   const handleDeleteJob = async (jobId) => {
     await axios
-      .delete(`https://job-seeking-website-seven.vercel.app/api/v1/job/delete/${jobId}`, {
+      .delete(`http://localhost:6005/api/v1/job/delete/${jobId}`, {
         withCredentials: true,
       })
       .then((res) => {
