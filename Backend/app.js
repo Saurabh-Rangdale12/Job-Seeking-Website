@@ -14,6 +14,14 @@ import fileUpload from "express-fileupload";
 const app = express();
 dotenv.config({ path: "./config/config.env" });
 
+app.use(cors(
+    {
+        origin: ["https://deploy-mern-1whq.vercel.app"],
+        methods: ["GET", "POST", "DELETE", "PUT"],
+        credentials: true,
+    }
+))
+
 
 // frontend endpoint
 app.use(cors({
